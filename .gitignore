@@ -1,6 +1,9 @@
 *.class
+
+# Temp Files #
 *.java~
 *.gitignore~
+*.md~
 
 # Package Files #
 *.jar
