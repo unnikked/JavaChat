@@ -32,9 +32,9 @@ public class ChatServer extends UnicastRemoteObject implements Server {
 	}
 	
 	public static void main(String[] args) {
-		if (System.getSecurityManager() == null) {
+		/*if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
-        }
+        }*/
 		try {
 			Naming.rebind("//localhost/jChat", new ChatServer());
 		} catch (RemoteException e) {
