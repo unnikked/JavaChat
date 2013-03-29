@@ -40,13 +40,16 @@ public class ChatClient extends UnicastRemoteObject implements Client, Runnable 
 				System.out.print("> ");
 				msg = sc.nextLine();
 				server.broadcast("[" + new Date().toString() + "]" + username + ": " + msg);
-			} catch (Exception e) {
-				System.out.println("Error!");
+			} catch (RemoteException e) {
+				System.out.println("Error with Remote Connection!");
 			}
 		}
 	}
 	
 	public static void main(String[] args) {
+		if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new SecurityManager());
+        }
 		try {
 			new ChatClient();
 		} catch (RemoteException e) {
