@@ -17,7 +17,9 @@ public class ChatClient extends UnicastRemoteObject implements Client, Runnable 
 		sc = new Scanner(System.in);
 		System.out.print("Choose your name: ");
 		this.username = sc.nextLine();
-		server = (Server) Naming.lookup("rmi://localhost/jChat");
+		System.out.print("Insert server ip/domain: ");
+		String url = sc.nextLine();
+		server = (Server) Naming.lookup("rmi://"+url+"/jChat");
 		if(server.join(this, this.username)) {
 			System.out.println("Successfully logged in!");
 		} else {
