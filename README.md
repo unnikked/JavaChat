@@ -12,7 +12,7 @@ Command List:
 - */list* : show the list of active channels
 - */join* : join a channel and starts to chat
 
-**NOTE**: for command */join* first digit it and then digit the name of channel
+**NOTE**: for command */join* first digit it and then digit the name of the channel
 
 ##Ver. 0.1
 ###Istructions for Linux users
