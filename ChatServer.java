@@ -8,16 +8,23 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class ChatServer extends UnicastRemoteObject implements Server {
+	private String serverName;
 	private Map<String, Client> users;
 	
-	public ChatServer() throws RemoteException {
+	private static final long serialVersionUID = 1L;
+	
+	public ChatServer(String serverName) throws RemoteException {
+		this.serverName = serverName;
 		users = new HashMap<String, Client>();
 	}
 	
 	public synchronized boolean join(Client client, String username) throws RemoteException {
 		if(!users.containsKey(username)) {
 			users.put(username, client);
-			System.out.println(username + " has joined the server");
+			Collection<Client> clients = users.values();
+			for(Client c : clients) {
+				if(c != client) c.receive(username + " has joined the channel");
+			}
 			return true;
 		}
 		return false;
@@ -28,19 +35,9 @@ public class ChatServer extends UnicastRemoteObject implements Server {
 		for(Client c : clients) {
 			c.receive(message);
 		}
-		System.out.println(message);
 	}
 	
-	public static void main(String[] args) {
-		/*if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }*/
-		try {
-			Naming.rebind("//localhost/jChat", new ChatServer());
-		} catch (RemoteException e) {
-			System.out.println("Network Error!");
-		} catch (MalformedURLException e) {
-			System.out.println("URL not valid!");
-		}
+	public String toString() {
+		return serverName;
 	}
 }

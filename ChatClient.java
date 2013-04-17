@@ -4,27 +4,27 @@ import java.rmi.RemoteException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.server.UnicastRemoteObject;
+import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
 import java.util.Date;
 import java.util.Scanner;
 
 public class ChatClient extends UnicastRemoteObject implements Client, Runnable {
 	private static Scanner sc;
 	private String username;
+	private ServerManager hand;
 	private Server server;
+	private Registry registry;
 	private Thread t;
 	
 	public ChatClient() throws RemoteException, NotBoundException, MalformedURLException {
 		sc = new Scanner(System.in);
 		System.out.print("Choose your name: ");
 		this.username = sc.nextLine();
-		System.out.print("Insert server ip/domain: ");
+		System.out.print("Insert server ip/domain (at the moment use localhost): ");
 		String url = sc.nextLine();
-		server = (Server) Naming.lookup("rmi://"+url+"/jChat");
-		if(server.join(this, this.username)) {
-			System.out.println("Successfully logged in!");
-		} else {
-			System.out.println("Error: You are not logged in!");
-		}
+		registry = LocateRegistry.getRegistry(url);
+		hand = (ServerManager) Naming.lookup("jChat");
 		t = new Thread(this);
 		t.start();
 	}
@@ -34,12 +34,33 @@ public class ChatClient extends UnicastRemoteObject implements Client, Runnable 
 	}//
 	
 	public void run() {
-		String msg;
+		String cmd, cmd2, msg;
 		while(true) {
 			try {
-				System.out.print("> ");
-				msg = sc.nextLine();
-				server.broadcast("[" + new Date().toString() + "]" + username + ": " + msg);
+				cmd = sc.nextLine();
+				if(cmd.equals("/list")) {
+					System.out.println("List of active channels:\n" + hand.listServers());
+				}
+				else if(cmd.equals("/join")) {
+					System.out.println("Select which channel do you want to join:");
+					cmd2 = sc.nextLine();
+					server = hand.joinServer(cmd2);
+					if(server != null && server.join(this, this.username)) {
+						System.out.println("Successfully logged in!");
+						System.out.println("Now you can chat! Type your messages");
+					} else {
+						System.out.println("Error: You are not logged in!");
+						continue;
+					}
+					while(true) {
+						msg = sc.nextLine();
+						server.broadcast("[" + new Date().toString() + "]" + username + ": " + msg);				
+					}				
+				} else {
+					System.out.println("Command list:");
+					System.out.println("/list - show the list of active channels");
+					System.out.println("/join - join a channel and starts to chat");
+				}
 			} catch (RemoteException e) {
 				System.out.println("Error with Remote Connection!");
 			}
