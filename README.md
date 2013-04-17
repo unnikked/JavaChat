@@ -9,8 +9,8 @@ A simple implementation of a chat using Java RMI
 - Configurements like __Ver. 0.1__
 
 Command List:
-*/list* : show the list of active channels
-*/join* : join a channel and starts to chat
+- */list* : show the list of active channels
+- */join* : join a channel and starts to chat
 
 **NOTE**: for command */join* first digit it and then digit the name og channel
 
