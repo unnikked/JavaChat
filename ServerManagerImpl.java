@@ -17,13 +17,16 @@ public class ServerManagerImpl extends UnicastRemoteObject implements ServerMana
 		servers = new HashMap<String, Server>();
 		
 		try {
-		    Registry registry = LocateRegistry.getRegistry("localhost");
+		    System.setProperty("java.rmi.server.hostname", "199.230.111.115");
+		    //Registry registry = LocateRegistry.getRegistry("localhost");
+		    Registry registry = LocateRegistry.createRegistry(1099);
+
 		    registry.rebind("jChat", this);
 		    System.out.println("ServerManager factory registered.");
 		} catch (Exception e) {
 		    System.err.println("Error registering service: "
 		            + e.getMessage());
-		}
+git 		}
 		
 	}
 	
