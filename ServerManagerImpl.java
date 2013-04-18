@@ -26,7 +26,7 @@ public class ServerManagerImpl extends UnicastRemoteObject implements ServerMana
 		} catch (Exception e) {
 		    System.err.println("Error registering service: "
 		            + e.getMessage());
-git 		}
+		}
 		
 	}
 	
