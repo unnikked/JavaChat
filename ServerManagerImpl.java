@@ -17,7 +17,7 @@ public class ServerManagerImpl extends UnicastRemoteObject implements ServerMana
 		servers = new HashMap<String, Server>();
 		
 		try {
-		    System.setProperty("java.rmi.server.hostname", "199.230.111.115");
+		    System.setProperty("java.rmi.server.hostname", "localhost");
 		    //Registry registry = LocateRegistry.getRegistry("localhost");
 		    Registry registry = LocateRegistry.createRegistry(1099);
 
