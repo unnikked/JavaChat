@@ -17,7 +17,7 @@ public class ServerManagerImpl extends UnicastRemoteObject implements ServerMana
 		servers = new HashMap<String, Server>();
 		
 		try {
-		    System.setProperty("java.rmi.server.hostname", "localhost");
+		    //System.setProperty("java.rmi.server.hostname", "localhost");
 		    //Registry registry = LocateRegistry.getRegistry("localhost");
 		    Registry registry = LocateRegistry.createRegistry(1099);
 
@@ -31,10 +31,12 @@ public class ServerManagerImpl extends UnicastRemoteObject implements ServerMana
 	}
 	
 	public synchronized String listServers() throws RemoteException {
+		System.out.println("A user requested the list of active channels");
 		return servers.values().toString();
 	}
 	
 	public synchronized Server joinServer(String serverName) throws RemoteException {
+		System.out.println("A user joined channel " + serverName);
 		return servers.get(serverName);
 	}
 	
@@ -46,7 +48,7 @@ public class ServerManagerImpl extends UnicastRemoteObject implements ServerMana
 	public static void main(String[] args) {
 		try {
 			ServerManager hand = new ServerManagerImpl();
-			hand.addServer("FreeStuf");
+			hand.addServer("FreeStuff");
 			hand.addServer("UnnikkedBlog");
 			hand.addServer("Linux");
 		} catch (RemoteException e) {
