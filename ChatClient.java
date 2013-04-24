@@ -18,7 +18,6 @@ public class ChatClient extends UnicastRemoteObject implements Client, Runnable 
 	private Thread t;
 	
 	public ChatClient() throws RemoteException, NotBoundException, MalformedURLException {
-	    System.setProperty("java.rmi.server.hostname", "localhost");
 		sc = new Scanner(System.in);
 		System.out.print("Choose your name: ");
 		this.username = sc.nextLine();
