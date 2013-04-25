@@ -2,6 +2,7 @@ import java.net.MalformedURLException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.Naming;
+import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
@@ -9,6 +10,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
+import java.io.IOException;
 
 public class ServerManagerImpl extends UnicastRemoteObject implements ServerManager {
 	private HashMap<String, Server> servers;
@@ -44,12 +46,15 @@ public class ServerManagerImpl extends UnicastRemoteObject implements ServerMana
 	
 	public static void main(String[] args) {
 		try {
+			RMISocketFactory.setSocketFactory(new SocketFactory());
 			ServerManager hand = new ServerManagerImpl();
 			hand.addServer("FreeStuff");
 			hand.addServer("UnnikkedBlog");
 			hand.addServer("Linux");
 		} catch (RemoteException e) {
 			System.out.println("Network Error!");
+		} catch (IOException e) {
+			System.out.println("IOException: " + e.getMessage());
 		}
 	}
 }

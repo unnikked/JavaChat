@@ -3,11 +3,13 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 import java.util.Date;
 import java.util.Scanner;
+import java.io.IOException;
 
 public class ChatClient extends UnicastRemoteObject implements Client, Runnable {
 	private static Scanner sc;
@@ -73,6 +75,7 @@ public class ChatClient extends UnicastRemoteObject implements Client, Runnable 
             System.setSecurityManager(new SecurityManager());
         }*/
 		try {
+			RMISocketFactory.setSocketFactory(new SocketFactory());
 			new ChatClient();
 		} catch (RemoteException e) {
 			System.out.println("Network Error!");
@@ -80,6 +83,8 @@ public class ChatClient extends UnicastRemoteObject implements Client, Runnable 
 			System.out.println("Server not reachable!");
 		} catch (MalformedURLException e) {
 			System.out.println("URL not valid!");
+		} catch (IOException e) {
+			System.out.println("IOException: " + e.getMessage());
 		}
 	}
 }
